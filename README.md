@@ -4,14 +4,16 @@
 
 # <a name="english"></a>English
 
-CompressHub is a web-based file compression tool with a distinctive black and orange UI design inspired by PornHub's iconic aesthetic. It provides a simple and intuitive interface for compressing files directly in your browser.
+CompressHub is a web-based image compression tool with a distinctive black and orange UI design inspired by PornHub's iconic aesthetic. It provides a simple and intuitive interface for compressing images directly in your browser while maintaining good quality.
 
 ## 🚀 Features
 
-- Browser-based file compression
-- No file size limits
-- Supports multiple file formats
+- Browser-based image compression
+- Support for JPG, PNG, WebP and other image formats
+- Smart compression algorithm to maintain image quality
 - Real-time compression progress
+- Batch image processing
+- No file size limits
 - Dark theme UI with orange accents
 - Mobile responsive design
 
@@ -71,14 +73,16 @@ MIT License
 
 # <a name="chinese"></a>中文
 
-CompressHub 是一个网页端文件压缩工具，其独特的黑橙配色UI设计直接采用了 PornHub 的标志性美学风格。它为用户提供了一个简单直观的浏览器端文件压缩界面。
+CompressHub 是一个网页端图片压缩工具，其独特的黑橙配色UI设计直接采用了 PornHub 的标志性美学风格。它为用户提供了一个简单直观的在线图片压缩服务，既能压缩图片体积又能保持良好的图片质量。
 
 ## 🚀 功能特点
 
-- 浏览器端文件压缩
-- 无文件大小限制
-- 支持多种文件格式
+- 浏览器端图片压缩
+- 支持 JPG、PNG、WebP 等多种图片格式
+- 智能压缩算法，保持图片质量
 - 实时压缩进度显示
+- 批量图片处理
+- 无文件大小限制
 - 暗色主题搭配橙色点缀
 - 移动端响应式设计
 
