@@ -1,112 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Online Image Compressor</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            background: #000000;
-            color: #ffffff;
-        }
-        h1 {
-            color: #ff9900;
-        }
+      :root {
+        --ph-orange: #ff9000;
+        --ph-black: #000000;
+        --ph-dark-gray: #1b1b1b;
+        --ph-text: #ffffff;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        background: var(--ph-black);
+        color: var(--ph-text);
+      }
+
+      .logo-text {
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        background: var(--ph-black);
+        padding: 10px 15px;
+        border-radius: 5px;
+      }
+
+      .logo-text span:first-child {
+        color: var(--ph-text);
+        background: var(--ph-black);
+        padding: 3px 8px;
+        border-radius: 3px;
+      }
+
+      .logo-text span:last-child {
+        color: var(--ph-black);
+        background: var(--ph-orange);
+        padding: 3px 8px;
+        border-radius: 3px;
+      }
+
+      .container {
+        text-align: center;
+        padding: 30px;
+        border: 2px solid var(--ph-orange);
+        border-radius: 8px;
+        background: var(--ph-dark-gray);
+        box-shadow: 0 4px 15px rgba(255, 144, 0, 0.2);
+        max-width: 800px;
+        width: 90%;
+      }
+
+      .settings {
+        margin: 20px 0;
+        padding: 20px;
+        background: rgba(255, 144, 0, 0.1);
+        border: 1px solid var(--ph-orange);
+        border-radius: 5px;
+        text-align: left;
+      }
+
+      .settings label {
+        display: block;
+        margin: 15px 0;
+        font-size: 1.1em;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        height: 8px;
+        background: var(--ph-dark-gray);
+        border-radius: 4px;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--ph-orange);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      select {
+        padding: 8px;
+        background: var(--ph-dark-gray);
+        color: var(--ph-text);
+        border: 1px solid var(--ph-orange);
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      input[type="file"] {
+        margin: 20px 0;
+        padding: 10px;
+        background: var(--ph-dark-gray);
+        border: 1px solid var(--ph-orange);
+        border-radius: 4px;
+        color: var(--ph-text);
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      button {
+        margin: 20px 0;
+        padding: 12px 30px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: var(--ph-black);
+        background: var(--ph-orange);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background: #ffa533;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 144, 0, 0.4);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background: var(--ph-dark-gray);
+        border: 1px solid var(--ph-orange);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 15px 0;
+        display: none;
+      }
+
+      .progress {
+        width: 0%;
+        height: 100%;
+        background: var(--ph-orange);
+        transition: width 0.3s ease;
+      }
+
+      .file-info {
+        margin: 20px 0;
+        padding: 15px;
+        background: rgba(255, 144, 0, 0.1);
+        border: 1px solid var(--ph-orange);
+        border-radius: 5px;
+        display: none;
+        font-size: 1.1em;
+        line-height: 1.6;
+      }
+
+      #download {
+        display: inline-block;
+        margin: 20px 0;
+        padding: 12px 30px;
+        color: var(--ph-black);
+        background: var(--ph-orange);
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      #download:hover {
+        background: #ffa533;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 144, 0, 0.4);
+      }
+
+      #preview img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 20px;
+        border: 2px solid var(--ph-orange);
+      }
+
+      /* 移动设备适配 */
+      @media screen and (max-width: 768px) {
         .container {
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #333;
-            border-radius: 8px;
-            background: #1a1a1a;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+          width: 95%;
+          padding: 15px;
+          margin: 10px;
         }
-        input[type="file"] {
-            margin: 10px 0;
+
+        .logo-text {
+          font-size: 2em;
         }
+
+        .settings {
+          padding: 15px 10px;
+        }
+
+        .settings label {
+          font-size: 1em;
+        }
+
         button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #ffffff;
-            background: #ff9900;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+          width: 100%;
+          padding: 10px;
+          font-size: 1.1em;
         }
-        button:hover {
-            background: #cc7a00;
+
+        input[type="file"] {
+          padding: 8px;
         }
-        img {
-            max-width: 100%;
-            margin-top: 20px;
-            border-radius: 8px;
+
+        #download {
+          width: 100%;
+          padding: 10px;
+          box-sizing: border-box;
+          text-align: center;
         }
-        a {
-            color: #ff9900;
-            text-decoration: none;
+
+        .file-info {
+          font-size: 0.9em;
+          padding: 10px;
         }
-        a:hover {
-            text-decoration: underline;
+      }
+
+      /* 超小屏幕设备适配 */
+      @media screen and (max-width: 480px) {
+        .logo-text {
+          font-size: 1.8em;
         }
+
+        .settings label {
+          margin: 10px 0;
+        }
+
+        .container {
+          padding: 10px;
+        }
+      }
+
+      /* 确保所有可点击元素有足够的点击区域 */
+      @media (hover: none) and (pointer: coarse) {
+        button,
+        select,
+        input[type="file"],
+        #download {
+          min-height: 44px;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Online Image Compressor</h1>
-        <input type="file" id="upload" accept="image/*">
-        <button onclick="compressImage()">Compress Image</button>
-        <canvas id="canvas" style="display:none;"></canvas>
-        <a id="download" style="display:none; margin-top: 10px;" download="compressed-image.jpg">Download Compressed Image</a>
-        <div id="preview"></div>
+      <div class="logo-text"><span>Image</span><span>Hub</span></div>
+
+      <div class="settings">
+        <label>
+          缩放比例:
+          <input
+            type="range"
+            id="scaleFactor"
+            min="10"
+            max="100"
+            value="70"
+            step="5"
+          />
+          <span id="scaleValue">70%</span>
+        </label>
+        <label>
+          压缩质量:
+          <input
+            type="range"
+            id="quality"
+            min="10"
+            max="100"
+            value="70"
+            step="5"
+          />
+          <span id="qualityValue">70%</span>
+        </label>
+        <label>
+          输出格式:
+          <select id="format">
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </label>
+      </div>
+
+      <input type="file" id="upload" accept="image/*" />
+      <button onclick="compressImage()">开始压缩</button>
+
+      <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+
+      <div class="file-info" id="fileInfo">
+        <div>原始大小: <span id="originalSize">0 KB</span></div>
+        <div>压缩后大小: <span id="compressedSize">0 KB</span></div>
+        <div>压缩率: <span id="compressionRatio">0%</span></div>
+      </div>
+
+      <canvas id="canvas" style="display: none"></canvas>
+      <a
+        id="download"
+        style="display: none; margin-top: 10px"
+        download="compressed-image.jpg"
+        >下载压缩后的图片</a
+      >
+      <div id="preview"></div>
     </div>
 
     <script>
-        function compressImage() {
-            const fileInput = document.getElementById('upload');
-            const canvas = document.getElementById('canvas');
-            const downloadLink = document.getElementById('download');
-            const preview = document.getElementById('preview');
+      document
+        .getElementById("scaleFactor")
+        .addEventListener("input", function (e) {
+          document.getElementById("scaleValue").textContent =
+            e.target.value + "%";
+        });
 
-            if (fileInput.files.length === 0) {
-                alert('Please upload an image file.');
-                return;
-            }
+      document
+        .getElementById("quality")
+        .addEventListener("input", function (e) {
+          document.getElementById("qualityValue").textContent =
+            e.target.value + "%";
+        });
 
-            const file = fileInput.files[0];
-            const reader = new FileReader();
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
 
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    const ctx = canvas.getContext('2d');
-                    const scaleFactor = 0.7; // Adjust compression level
-                    const width = img.width * scaleFactor;
-                    const height = img.height * scaleFactor;
+      function compressImage() {
+        const fileInput = document.getElementById("upload");
+        const canvas = document.getElementById("canvas");
+        const downloadLink = document.getElementById("download");
+        const preview = document.getElementById("preview");
+        const progressBar = document.querySelector(".progress-bar");
+        const progress = document.getElementById("progress");
+        const fileInfo = document.getElementById("fileInfo");
 
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // Adjust quality
-
-                    preview.innerHTML = `<img src="${compressedDataUrl}" alt="Compressed Image">`;
-                    downloadLink.href = compressedDataUrl;
-                    downloadLink.style.display = 'block';
-                    downloadLink.textContent = 'Download Compressed Image';
-                };
-
-                img.src = event.target.result;
-            };
-
-            reader.readAsDataURL(file);
+        if (fileInput.files.length === 0) {
+          alert("Please upload an image file.");
+          return;
         }
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        document.getElementById("originalSize").textContent = formatFileSize(
+          file.size
+        );
+        fileInfo.style.display = "block";
+        progressBar.style.display = "block";
+
+        let progressValue = 0;
+        const progressInterval = setInterval(() => {
+          progressValue += 5;
+          if (progressValue <= 90) {
+            progress.style.width = progressValue + "%";
+          }
+        }, 100);
+
+        reader.onload = function (event) {
+          const img = new Image();
+          img.onload = function () {
+            const scaleFactor =
+              document.getElementById("scaleFactor").value / 100;
+            const quality = document.getElementById("quality").value / 100;
+            const format = document.getElementById("format").value;
+
+            const ctx = canvas.getContext("2d");
+            const width = img.width * scaleFactor;
+            const height = img.height * scaleFactor;
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedDataUrl = canvas.toDataURL(format, quality);
+
+            const compressedSize = Math.round(
+              ((compressedDataUrl.length - 22) * 3) / 4
+            );
+            document.getElementById("compressedSize").textContent =
+              formatFileSize(compressedSize);
+
+            const ratio = Math.round((1 - compressedSize / file.size) * 100);
+            document.getElementById("compressionRatio").textContent =
+              ratio + "%";
+
+            clearInterval(progressInterval);
+            progress.style.width = "100%";
+            setTimeout(() => {
+              progressBar.style.display = "none";
+              progress.style.width = "0%";
+            }, 1000);
+
+            preview.innerHTML = `<img src="${compressedDataUrl}" alt="Compressed Image">`;
+            downloadLink.href = compressedDataUrl;
+            downloadLink.style.display = "block";
+
+            const extension = format.split("/")[1];
+            downloadLink.download = `compressed-image.${extension}`;
+            downloadLink.textContent = "Download Compressed Image";
+          };
+
+          img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      }
     </script>
-</body>
+  </body>
 </html>
